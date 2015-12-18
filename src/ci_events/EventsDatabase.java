@@ -14,12 +14,13 @@ import java.sql.Statement;
 public class EventsDatabase {
 
         // JDBC driver name and database URL
-    static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-    static final String DB_URL = "jdbc:mysql://localhost:3306/venusclassic";
+    // static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
+    //static final String DB_URL = "jdbc:mysql://localhost:3306/venusclassic";
+    static final String DB_URL = "postgres://prfshwatmndsfw:F-gBA0Cm5ruSU15m_qtunZRIEo@ec2-54-83-59-203.compute-1.amazonaws.com:5432/d22tq5p9r1orpq";
     
     //  Database credentials
-    static final String USER = "root";
-    static final String PASS = "root";
+    static final String USER = "prfshwatmndsfw";                //old "root"
+    static final String PASS = "F-gBA0Cm5ruSU15m_qtunZRIEo";    //old "root"
     /**
      * I'm thinking this class would likely be best implemented as a static
      * class. If so, we would need to modify the methods as needed.

@@ -18,8 +18,6 @@ public class Event {
     private String creator;
     private ArrayList<String> members;
     private String location;
-    private ArrayList<String> tags;
-    private double [] weeklyWeather;
 
     private static final int WEEK = 7;
 
@@ -38,7 +36,7 @@ public class Event {
      * @param creator 
      * @param date
      */
-    public Event(String title, String date, String creator, String location) {
+    public Event(String title, String date, String creator, String location, int idEvent) {
         this.date=date;
         this.idEvent= idEvent;
         this.creator = creator;
@@ -46,19 +44,15 @@ public class Event {
         this.members = new ArrayList<>();
         this.title = title;
         this.description = new String();
-        this.tags = new ArrayList<>();
+    }
+    
+    public Event(String title, String date, String creator, String location) {
+        this(title, date, creator, location, -1);
     }
     
     public Event(){
         //Empty constructor for overload.
-        this.date="NotSet";
-        this.idEvent= -1;
-        this.creator = "NotSet";
-        this.location = "NotSet";
-        this.members = new ArrayList<>();
-        this.title = "NotSet";
-        this.description = "NotSet";
-        this.tags = new ArrayList<>();
+        this("Not set","Not set","Not set","Not set",-1);
     }
     
     public void setDescription(String description) {
@@ -81,6 +75,10 @@ public class Event {
     public int getIdEvent() {
         return idEvent;
     }
+    
+    public void setIdEvent(int idEvent) {
+        this.idEvent = idEvent;
+    }
 
     public String getDate() {
         return date;
@@ -88,20 +86,6 @@ public class Event {
     
     public void setDate(String eventDate) {
         date = eventDate;
-    }
-   
-    /**
-     * This will set the current list of tags to whatever is listed as parameters
-     * To do so, it first clears out the current list of tags, then adds everything in 
-     * the list passed in
-     * 
-     * @param tags 
-     */
-    public void setTags(String... tags) {
-        this.tags.clear();
-        for(int i = 0; i < tags.length; i++) {
-            this.tags.add(tags[i]);
-        }
     }
     
     public ArrayList<String> getMembers() {
@@ -126,10 +110,6 @@ public class Event {
     
     public String getDescription() {
         return this.description;
-    }
-    
-    public ArrayList<String> getTags() {
-        return this.tags;
     }
 
     public Date getEventDate(String date)
