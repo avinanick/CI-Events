@@ -8,22 +8,17 @@ package view;
 import ci_events.CIEventsController;
 import ci_events.EventsDatabase;
 import ci_events.UserDatabase;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.Vector;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-import net.proteanit.sql.DbUtils;
+
 /**
  *
  * @author avina
+ * 
+ * Needs to be modified to not connect to the database itself, give power to controller
  */
 public class MainWindow extends javax.swing.JPanel {
 
@@ -39,52 +34,9 @@ public class MainWindow extends javax.swing.JPanel {
         
     }
     
-    static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-    static final String DB_URL = "jdbc:mysql://localhost:3306/venusclassic";
-    
-    //  Database credentials
-    static final String USER = "root";
-    static final String PASS = "root";
-    
     public void updateTable(){
-        Connection conn = null;
-        Statement stmt = null;
-        PreparedStatement statement;
-        try{
-            Class.forName("com.mysql.jdbc.Driver");
-            conn = DriverManager.getConnection(DB_URL,USER,PASS);
-
-            statement =conn.prepareStatement("SELECT * FROM Event");
-            ResultSet rs = statement.executeQuery();
-            
-            //STEP 5: Extract data from result set
-            while(rs.next()){
-                jTable1.setModel(DbUtils.resultSetToTableModel(rs));
-            }
-            rs.close();
-            statement.close();
-            conn.close();
-        }catch(SQLException se){
-            //Handle errors for JDBC
-            se.printStackTrace();
-        }catch(Exception e){
-            //Handle errors for Class.forName
-            e.printStackTrace();
-        }finally{
-            //finally block used to close resources
-            try{
-                if(stmt!=null)
-                    stmt.close();
-            }catch(SQLException se2){
-            }// nothing we can do
-            try{
-                if(conn!=null)
-                    conn.close();
-            }catch(SQLException se){
-                se.printStackTrace();
-            }//end finally try
-        }//end try
-}
+        // jTable1.setModel();
+    }
     
     
     public JTable getEventTable()

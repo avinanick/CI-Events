@@ -59,15 +59,33 @@ public class EventsDatabase {
                 //Retrieve by column name
                 int id  = rs.getInt("idEvent");
                 String eventName = rs.getString("title");
+                String date = rs.getString("date");
                 String description = rs.getString("description");
                 String creator = rs.getString("creator");
+                String location = rs.getString("location");
+                
+                //Get the members for the event
+                PreparedStatement getMembers = conn.prepareStatement("SELECT * FROM event_user WHERE idEvent = ?");
+                getMembers.setString(1, id + "");
+                ResultSet membersResult = getMembers.executeQuery();
+                ArrayList<String> members = new ArrayList<>();
+                while(membersResult.next()) {
+                    members.add(rs.getString("email"));
+                }
+                
+                //Put the data into an event class
+                Event returnEvent = new Event(eventName, date, creator, location, id);
+                returnEvent.setDescription(description);
+                for(String currentUser : members) {
+                    returnEvent.addMember(currentUser);
+                }
                 
                 //Display values
                 System.out.print("ID: " + id);
                 System.out.print(", Name: " + eventName);
                 System.out.println(", Description: " + description);
                 System.out.println(", Creator: " + creator);
-                return null;
+                return returnEvent;
             }
             //STEP 6: Clean-up environment
             rs.close();
@@ -108,6 +126,7 @@ public class EventsDatabase {
         Connection conn = null;
         Statement stmt = null;
         PreparedStatement statement;
+        ArrayList<Event> returnEvents = new ArrayList<>();
         try{
             //STEP 2: Register JDBC driver
             Class.forName("com.mysql.jdbc.Driver");
@@ -118,8 +137,8 @@ public class EventsDatabase {
             
             //STEP 4: Execute a query
             System.out.println("Creating statement...");
-            statement =conn.prepareStatement("SELECT * FROM Event inner join event_user on Event.idEvent=event_user.EventIdEvent inner join User"
-                    + " on event_user.UserIdUser=user.IdUser WHERE user.name = ?");
+            statement =conn.prepareStatement("SELECT * FROM Event inner join event_user on Event.idEvent=event_user.idEvent "
+                    + "WHERE event_user.email = ?");
             statement.setString(1, userName);
             ResultSet rs = statement.executeQuery();
             
@@ -128,14 +147,33 @@ public class EventsDatabase {
                 //Retrieve by column name
                 int id  = rs.getInt("idEvent");
                 String eventName = rs.getString("title");
+                String date = rs.getString("date");
                 String description = rs.getString("description");
                 String creator = rs.getString("creator");
+                String location = rs.getString("location");
+                
+                //Get the members for the event
+                PreparedStatement getMembers = conn.prepareStatement("SELECT * FROM event_user WHERE idEvent = ?");
+                getMembers.setString(1, id + "");
+                ResultSet membersResult = getMembers.executeQuery();
+                ArrayList<String> members = new ArrayList<>();
+                while(membersResult.next()) {
+                    members.add(rs.getString("email"));
+                }
+                
+                //Put the data into an event class
+                Event returnEvent = new Event(eventName, date, creator, location, id);
+                returnEvent.setDescription(description);
+                for(String currentUser : members) {
+                    returnEvent.addMember(currentUser);
+                }
                 
                 //Display values
                 System.out.print("ID: " + id);
                 System.out.print(", Name: " + eventName);
                 System.out.println(", Description: " + description);
-                System.out.println(", Creator: " + creator);             
+                System.out.println(", Creator: " + creator);
+                returnEvents.add(returnEvent);
             }
             
             //STEP 6: Clean-up environment
@@ -162,7 +200,7 @@ public class EventsDatabase {
                 se.printStackTrace();
             }//end finally try
         }//end try
-        return null;
+        return returnEvents;
     }
     
     /**
@@ -175,6 +213,7 @@ public class EventsDatabase {
         Connection conn = null;
         Statement stmt = null;
         PreparedStatement statement;
+        ArrayList<Event> allEvents = new ArrayList<>();
         try{
             //STEP 2: Register JDBC driver
             Class.forName("com.mysql.jdbc.Driver");
@@ -193,14 +232,33 @@ public class EventsDatabase {
                 //Retrieve by column name
                 int id  = rs.getInt("idEvent");
                 String eventName = rs.getString("title");
+                String date = rs.getString("date");
                 String description = rs.getString("description");
                 String creator = rs.getString("creator");
+                String location = rs.getString("location");
+                
+                //Get the members for the event
+                PreparedStatement getMembers = conn.prepareStatement("SELECT * FROM event_user WHERE idEvent = ?");
+                getMembers.setString(1, id + "");
+                ResultSet membersResult = getMembers.executeQuery();
+                ArrayList<String> members = new ArrayList<>();
+                while(membersResult.next()) {
+                    members.add(rs.getString("email"));
+                }
+                
+                //Put the data into an event class
+                Event returnEvent = new Event(eventName, date, creator, location, id);
+                returnEvent.setDescription(description);
+                for(String currentUser : members) {
+                    returnEvent.addMember(currentUser);
+                }
                 
                 //Display values
                 System.out.print("ID: " + id);
                 System.out.print(", Name: " + eventName);
                 System.out.println(", Description: " + description);
                 System.out.println(", Creator: " + creator);
+                allEvents.add(returnEvent);
             }
             //STEP 6: Clean-up environment
             rs.close();
@@ -226,7 +284,7 @@ public class EventsDatabase {
                 se.printStackTrace();
             }//end finally try
         }//end try
-        return null;
+        return allEvents;
     }
     
     /**
@@ -259,30 +317,32 @@ public class EventsDatabase {
             
             //STEP 5: Extract data from result set
             while(rs.next()){              
-            System.out.println("Event existent");
-            String updateEvent = "UPDATE Event"
-				+ "(IdEvent, Title, Description, Creator, Date) VALUES"
-				+ "(?,?,?,?,?)";
-            statement2 =conn.prepareStatement(updateEvent);
-            statement2.setInt(1, event.getIdEvent());
-	    statement2.setString(2, event.getTitle());
-	    statement2.setString(3, event.getDescription());
-            statement2.setString(4, event.getCreator());
-            statement2.setString(5, event.getDate());
-            statement2.executeUpdate();
+                System.out.println("Event existent");
+                String updateEvent = "UPDATE Event"
+				+ "(IdEvent, Title, Description, Creator, Date, Location) VALUES"
+				+ "(?,?,?,?,?,?)";
+                statement2 =conn.prepareStatement(updateEvent);
+                statement2.setInt(1, event.getIdEvent());
+                statement2.setString(2, event.getTitle());
+                statement2.setString(3, event.getDescription());
+                statement2.setString(4, event.getCreator());
+                statement2.setString(5, event.getDate());
+                statement2.setString(6, event.getLocation());
+                statement2.executeUpdate();
             
-            String updateGuest = "UPDATE Guest"
+                //Update the list of guests, currently nonfunctional
+                String updateGuest = "UPDATE Guest"
 				+ "(IdGuest, guestEmail) VALUES"
 				+ "(?,?)";
-            statement3 =conn.prepareStatement(updateGuest);
-            statement3.setInt(1, eu.getIdGuest());
-	    statement3.setString(2, eu.getGuestEmail());
+                statement3 =conn.prepareStatement(updateGuest);
+                statement3.setInt(1, eu.getIdGuest());
+                statement3.setString(2, eu.getGuestEmail());
 
 
-            System.out.println("Record updated into Event table!");
-            statement3.close();
-            statement2.close();
-            return true;
+                System.out.println("Record updated into Event table!");
+                statement3.close();
+                statement2.close();
+                return true;
             }
             //STEP 6: Clean-up environment
             rs.close();
@@ -351,25 +411,28 @@ public class EventsDatabase {
                 return true;
             }
             String insertTableSQL = "INSERT INTO Event"
-				+ "(IdEvent, Title, Description, Creator, Date) VALUES"
-				+ "(?,?,?,?,?)";
+				+ "(IdEvent, Title, Description, Creator, Date, Location) VALUES"
+				+ "(?,?,?,?,?,?)";
             statement2 =conn.prepareStatement(insertTableSQL);
             statement2.setInt(1, event.getIdEvent());
 	    statement2.setString(2, event.getTitle());
 	    statement2.setString(3, event.getDescription());
             statement2.setString(4, event.getCreator());
             statement2.setString(5, event.getDate());
+            statement2.setString(6, event.getLocation());
             statement2.executeUpdate();
             
-            String updateGuest = "INSERT into Guest"
-				+ "(IdGuest, guestEmail) VALUES"
+            for(String currentEmail : event.getMembers()) {
+                String updateGuest = "INSERT into event_user"
+				+ "(IdEvent, Email) VALUES"
 				+ "(?,?)";
-            statement3 =conn.prepareStatement(updateGuest);
-            statement3.setInt(1, eu.getIdGuest());
-	    statement3.setString(2, eu.getGuestEmail());
+                statement3 =conn.prepareStatement(updateGuest);
+                statement3.setInt(1, event.getIdEvent());
+                statement3.setString(2, currentEmail);
+                statement3.executeUpdate();
+            }
             
             System.out.println("Record is inserted into Event table!");
-            statement3.close();
             statement2.close();
             
             //STEP 6: Clean-up environment
@@ -424,11 +487,16 @@ public class EventsDatabase {
             
             // execute insert SQL stetement
             statement1.executeUpdate();
+            
+            PreparedStatement statement2 = conn.prepareStatement("DELETE event_user WHERE idEvent = ?");
+            statement2.setInt(1, event.getIdEvent());
+            statement2.executeUpdate();
 
             System.out.println("Event deleted! ");
             
             //STEP 6: Clean-up environment
             rs.close();
+            statement2.close();
             statement1.close();
             conn.close();
         }catch(SQLException se){
@@ -473,11 +541,16 @@ public class EventsDatabase {
             
             // execute insert SQL stetement
             statement1.executeUpdate();
+            
+            PreparedStatement statement2 = conn.prepareStatement("DELETE event_user WHERE idEvent = ?");
+            statement2.setInt(1, eventID);
+            statement2.executeUpdate();
 
             System.out.println("Event deleted! ");
             
             //STEP 6: Clean-up environment
             //rs.close();
+            statement2.close();
             statement1.close();
             conn.close();
         }catch(SQLException se){
