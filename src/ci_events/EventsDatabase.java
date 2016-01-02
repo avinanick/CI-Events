@@ -16,11 +16,11 @@ public class EventsDatabase {
         // JDBC driver name and database URL
     // static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
     //static final String DB_URL = "jdbc:mysql://localhost:3306/venusclassic";
-    static final String DB_URL = "postgres://prfshwatmndsfw:F-gBA0Cm5ruSU15m_qtunZRIEo@ec2-54-83-59-203.compute-1.amazonaws.com:5432/d22tq5p9r1orpq";
+    private static final String DB_URL = "postgres://prfshwatmndsfw:F-gBA0Cm5ruSU15m_qtunZRIEo@ec2-54-83-59-203.compute-1.amazonaws.com:5432/d22tq5p9r1orpq";
     
     //  Database credentials
-    static final String USER = "prfshwatmndsfw";                //old "root"
-    static final String PASS = "F-gBA0Cm5ruSU15m_qtunZRIEo";    //old "root"
+    private static final String USER = "prfshwatmndsfw";                //old "root"
+    private static final String PASS = "F-gBA0Cm5ruSU15m_qtunZRIEo";    //old "root"
     /**
      * I'm thinking this class would likely be best implemented as a static
      * class. If so, we would need to modify the methods as needed.
@@ -36,7 +36,7 @@ public class EventsDatabase {
      * @param title The name of the event to be returned
      * @return The specified event returned in an Event object, or null if not found
      */
-    public Event findEventByName(String title) {
+    public static Event findEventByName(String title) {
         Connection conn = null;
         Statement stmt = null;
         PreparedStatement statement;
@@ -122,7 +122,7 @@ public class EventsDatabase {
      * @param userName The email of the user to be found in all of the returned events
      * @return An ArrayList that contains all of the Events that the user is a member of
      */
-    public ArrayList<Event> findEventsByUser(String userName) {
+    public static ArrayList<Event> findEventsByUser(String userName) {
         Connection conn = null;
         Statement stmt = null;
         PreparedStatement statement;
@@ -209,7 +209,7 @@ public class EventsDatabase {
      * 
      * @return An ArrayList of all events in the database
      */
-    public ArrayList<Event> allEvents() {
+    public static ArrayList<Event> allEvents() {
         Connection conn = null;
         Statement stmt = null;
         PreparedStatement statement;
@@ -295,7 +295,7 @@ public class EventsDatabase {
      * @param event The updated event with the new information
      * @return false if the event could not be found or updated, true otherwise
      */
-    public boolean updateEvent(Event event, Event_User eu) {
+    public static boolean updateEvent(Event event, Event_User eu) {
         Connection conn = null;
         Statement stmt = null;
         PreparedStatement statement1;

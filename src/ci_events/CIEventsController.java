@@ -138,7 +138,7 @@ public class CIEventsController {
                 eventModel.storeEvent(ev, guest);
                 System.out.println("Post-event storage.");
                 
-                mainView.updateTable();
+                mainView.updateTable(EventsDatabase.findEventsByUser(currentUsername)); 
                 eventView.setVisible(false);
                 controllingJFrame.setVisible(false);
                 
