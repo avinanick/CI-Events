@@ -385,7 +385,7 @@ public class EventsDatabase {
      * @param event The new event to be added to the database
      * @return false if the event could not be added. True otherwise
      */
-    public boolean storeEvent(Event event, Event_User eu) {
+    public static boolean storeEvent(Event event, Event_User eu) {
         Connection conn = null;
         Statement stmt = null;
         PreparedStatement statement1;
@@ -467,7 +467,7 @@ public class EventsDatabase {
      *
      * @param event The event to be removed from the table
      */
-    public void deleteEvent(Event event) {
+    public static void deleteEvent(Event event) {
         Connection conn = null;
         Statement stmt = null;
         PreparedStatement statement1;
@@ -521,7 +521,7 @@ public class EventsDatabase {
         }//end try
     }
     
-    public void deleteEvent(int eventID) {
+    public static void deleteEvent(int eventID) {
         Connection conn = null;
         Statement stmt = null;
         PreparedStatement statement1;

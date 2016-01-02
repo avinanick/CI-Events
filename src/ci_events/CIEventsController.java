@@ -17,7 +17,6 @@ import javax.swing.JTable;
 public class CIEventsController {
     
     private CreateEventView     eventView;
-    private EventsDatabase      eventModel;
     
     private Login               loginView;
     
@@ -32,9 +31,8 @@ public class CIEventsController {
     public boolean              editMode = false;
     
     
-   public CIEventsController(CreateEventView eventView, EventsDatabase eventModel){
+   public CIEventsController(CreateEventView eventView){
        this.eventView = eventView;
-       this.eventModel = eventModel;
        
        this.eventView.addCreateEventListener(new CreateEventListener());
    }
@@ -135,7 +133,7 @@ public class CIEventsController {
                 ev.addMembers(memberList);
                 ev.updateWeather();
                 System.out.println("Attempting event storage.");
-                eventModel.storeEvent(ev, guest);
+                EventsDatabase.storeEvent(ev, guest);
                 System.out.println("Post-event storage.");
                 
                 mainView.updateTable(EventsDatabase.findEventsByUser(currentUsername)); 
