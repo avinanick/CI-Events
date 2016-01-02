@@ -34,6 +34,12 @@ public class MainWindow extends javax.swing.JPanel {
         
     }
     
+    /**
+     * Set this method to take an ArrayList of events, and populate the table with the data
+     * from the events
+     * 
+     * @param events an ArrayList of events to populate the table
+     */
     public void updateTable(){
         // jTable1.setModel();
     }

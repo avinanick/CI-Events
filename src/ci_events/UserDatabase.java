@@ -1,6 +1,6 @@
 package ci_events;
 
-import ci_events.User_Classes.User;
+import ci_events.User_Classes.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -10,13 +10,14 @@ import java.sql.Statement;
 
 public class UserDatabase {
     
-    // JDBC driver name and database URL
-    static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-    static final String DB_URL = "jdbc:mysql://localhost:3306/venusclassic";
+        // JDBC driver name and database URL
+    // static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
+    //static final String DB_URL = "jdbc:mysql://localhost:3306/venusclassic";
+    static final String DB_URL = "postgres://prfshwatmndsfw:F-gBA0Cm5ruSU15m_qtunZRIEo@ec2-54-83-59-203.compute-1.amazonaws.com:5432/d22tq5p9r1orpq";
     
     //  Database credentials
-    static final String USER = "root";
-    static final String PASS = "root";
+    static final String USER = "prfshwatmndsfw";                //old "root"
+    static final String PASS = "F-gBA0Cm5ruSU15m_qtunZRIEo";    //old "root"
     
     /**
      * I'm thinking this class would likely be best implemented as a static
@@ -60,13 +61,32 @@ public class UserDatabase {
                 int securityLevel = rs.getInt("securityLevel");
                 String name = rs.getString("name");
                 String userEmail = rs.getString("email");
+                String pass = rs.getString("password");
                 
                 //Display values
                 System.out.print("ID: " + id);
                 System.out.print(", Security Level: " + securityLevel);
                 System.out.print(", Name: " + name);
                 System.out.println(", Email: " + userEmail);
-                return null;
+                
+                //Put into a User class
+                User returnUser;
+                switch(securityLevel) {
+                    case 1:
+                        returnUser = new Student(name, userEmail, pass);
+                        break;
+                    case 2:
+                        returnUser = new Faculty(name, userEmail, pass);
+                        break;
+                    case 3:
+                        returnUser = new Admin(name, userEmail, pass);
+                        break;
+                    default:
+                        System.out.println("User stored incorrectly");
+                        returnUser = new Guest(name, userEmail, pass);
+                        break;
+                }
+                return returnUser;
             }
             //STEP 6: Clean-up environment
             rs.close();
@@ -92,6 +112,7 @@ public class UserDatabase {
                 se.printStackTrace();
             }//end finally try
         }//end try
+        //If this point is reached, no user was found to match the email
         System.out.println("User not found");
         return null;
     }
@@ -99,6 +120,8 @@ public class UserDatabase {
     /**
      * Stores a user in the database if possible. The email for each user should
      * be unique, so do not insert if there is already a user with the same email
+     * 
+     * currently does not appear to store the user, must fix
      *
      * @param email The user to be stored in the User table in the database
      * @return boolean false if the user could not be added, true otherwise

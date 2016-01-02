@@ -3,10 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Marco/Desktop/VENUS/CI_Events/src/view/MainWindow.java</file>
-            <file>file:/C:/Users/Marco/Desktop/VENUS/CI_Events/src/ci_events/CIEventsController.java</file>
-            <file>file:/C:/Users/Marco/Desktop/VENUS/CI_Events/src/ci_events/Event.java</file>
-            <file>file:/C:/Users/Marco/Desktop/VENUS/CI_Events/src/ci_events/CI_Events.java</file>
+            <file>file:/C:/Users/avina/Documents/CI_Events/src/ci_events/Event_User.java</file>
+            <file>file:/C:/Users/avina/Documents/CI_Events/src/ci_events/Event.java</file>
+            <file>file:/C:/Users/avina/Documents/CI_Events/src/view/MainWindow.java</file>
+            <file>file:/C:/Users/avina/Documents/CI_Events/src/ci_events/EventsDatabase.java</file>
         </group>
     </open-files>
 </project-private>
