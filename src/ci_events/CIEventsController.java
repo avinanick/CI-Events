@@ -54,6 +54,8 @@ public class CIEventsController {
    public String getCurrentUser(){
        return currentUsername;
    }
+   
+   // Modify this method to get an event using the EventsDatabase matching the selected row
    public void EditEvent()
    {
        JTable eventTable = mainView.getEventTable();

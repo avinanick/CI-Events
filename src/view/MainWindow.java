@@ -6,8 +6,10 @@
 package view;
 
 import ci_events.CIEventsController;
+import ci_events.Event;
 import ci_events.EventsDatabase;
 import ci_events.UserDatabase;
+import java.util.ArrayList;
 import java.util.Vector;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -28,9 +30,9 @@ public class MainWindow extends javax.swing.JPanel {
     /**
      * Creates new form MainWindow
      */
-    public MainWindow() {
+    public MainWindow(ArrayList<Event> events) {
         initComponents();
-        updateTable();
+        updateTable(events);
         
     }
     
@@ -40,7 +42,7 @@ public class MainWindow extends javax.swing.JPanel {
      * 
      * @param events an ArrayList of events to populate the table
      */
-    public void updateTable(){
+    public void updateTable(ArrayList<Event> events){
         // jTable1.setModel();
     }
     
@@ -225,7 +227,7 @@ public class MainWindow extends javax.swing.JPanel {
         int eID = Integer.parseInt(jTable1.getValueAt(row, col).toString() );
         e.deleteEvent( eID );
         System.out.println(eID);
-        this.updateTable();
+        this.updateTable(e.allEvents());
     }//GEN-LAST:event_jButton7MouseClicked
 
 
